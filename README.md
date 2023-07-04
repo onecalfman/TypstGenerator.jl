@@ -110,7 +110,6 @@ For a full list of functions check the TypstGenerator.jl file.
 - References when a figure is in an align.
 - repeat
 - measure
-- move
 - counter
 - layout
 - locate

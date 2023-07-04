@@ -1,0 +1,13 @@
+name = "TypstGenerator"
+uuid = "b4d5b4e8-9a4e-401d-a981-0a2e8ff042be"
+authors = ["Jonas Walkling <jonas@walkling.email>"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

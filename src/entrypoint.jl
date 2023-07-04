@@ -7,7 +7,10 @@ doc
 #show: project.with("$title")
 	"""
 
-typst(
-    content::Union{AbstractTypst, Vector{AbstractTypst}}; 
-    title::String = "", 
-    authors::Vector{String} = [])::String = gen_header(title, authors) * render(content, create_context(true))
+TypstElements = Union{AbstractTypst, Vector{AbstractTypst}, Vector{TypstBaseElement}}
+
+function typst(content::T; title::AbstractString, authors::Vector{AbstractString}) where {T <: TypstElements}
+    gen_header(title, authors) * render(content, create_context(true))
+end
+    
+typst(content) = typst(content::T, title = "Document", authors = ["anonymous"]) where {T <: TypstElements}

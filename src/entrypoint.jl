@@ -9,8 +9,6 @@ doc
 
 TypstElements = Union{AbstractTypst, Vector{AbstractTypst}, Vector{TypstBaseElement}}
 
-function typst(content::T; title::AbstractString, authors::Vector{AbstractString}) where {T <: TypstElements}
-    gen_header(title, authors) * render(content, create_context(true))
+function typst(content::T; title::E = "None", authors::Vector{S} = ["None"]) where {T <: TypstElements, E <: AbstractString, S <: AbstractString}
+    gen_header(string(title), string.(authors)) * render(content, create_context(true))
 end
-    
-typst(content) = typst(content::T, title = "Document", authors = ["anonymous"]) where {T <: TypstElements}

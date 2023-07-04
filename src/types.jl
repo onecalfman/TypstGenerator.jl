@@ -114,6 +114,8 @@ abstract type TypstScale <: TypstParen end
 abstract type TypstEnum <: TypstParen end
 abstract type TypstTable <: TypstParen end
 abstract type TypstStack <: TypstParen end
+abstract type TypstMove <: TypstParen end
+abstract type TypstRepeat <: TypstParen end
 abstract type TypstPad <: TypstParen end
 abstract type TypstBibliography <: TypstParen end
 
@@ -124,7 +126,6 @@ abstract type TypstFootnote <: TypstBracket end
 
 abstract type TypstHeading <: TypstReferable end
 abstract type TypstFigure <: TypstReferable end
-abstract type TypstLink <: TypstBracket end
 
 abstract type TypstColbreak <: TypstControlls end
 abstract type TypstPagebreak <: TypstControlls end
@@ -144,6 +145,11 @@ abstract type TypstOutline <: TypstControlls end
 struct TypstAlign <: TypstControlls
 	content::TypstElement
 	align::Union{Symbol, AbstractString}
+end
+
+struct TypstLink <: TypstMeta
+	content::TypstElement
+	dest::AbstractString
 end
 
 struct TypstPlace <: TypstControlls
@@ -237,6 +243,7 @@ typedict = Dict(
 	:TypstList => "list",
 	:TypstLiteral => "",
 	:TypstLorem => "lorem",
+	:TypstMove => "move",
 	:TypstNumbering => "numbering",
 	:TypstOutline => "outline",
 	:TypstPad => "pad",
@@ -247,6 +254,7 @@ typedict = Dict(
 	:TypstPlace => "place",
 	:TypstPolygon => "polygon",
 	:TypstRect => "rect",
+	:TypstRepeat => "repeat",
 	:TypstReference => "ref",
 	:TypstRotate => "rotate",
 	:TypstScale => "scale",

@@ -13,6 +13,7 @@ import Base.stack
 @TypstElem(TypstTable, TypstVec)
 @TypstElem(TypstTerms, TypstVec)
 @TypstElem(TypstFootnote, TypstElement)
+@TypstElem(TypstMove, TypstElement)
 @TypstElem(TypstBibliography, AbstractString)
 
 
@@ -68,6 +69,8 @@ cmyk(c::C, m::M, y::Y, k::K) where {C, M, Y, K <: Real} = TypstCMYK(c, m, y, k)
 deg(value::T) where {T <: Real} = TypstAngle(value)
 
 align(content::TypstElement, align::Union{Symbol, AbstractString}) = TypstAlign(content, align)
+
+link(content::TypstElement, dest::AbstractString) = TypstLink(content, dest)
 
 
 v(l::TypstLength) = TypstV(l)

@@ -90,6 +90,7 @@ page([
         caption = text("a figure")
     ),
     lorem(20),
+    lorem(20),
     ref(:label1)
 ])
 ```

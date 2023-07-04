@@ -68,7 +68,7 @@ render(c::TypstContext, e) = "$(render(c))$(name(e))"
 
 render(e::TypstMath, _) = "\$$(e.expr)\$"
 
-render(t::TypstLink, context::TypstContext) = "$(render(context,t))($(t.dest), $(render(t.content,create_context(false, context.indent))))"
+render(t::TypstLink, context::TypstContext) = "$(render(context,t))(\"$(t.dest)\", $(render(t.content,create_context(false, context.indent))))"
 
 render(e::TypstVec, context::TypstContext) = "\n" * join(map(x -> render(x, context), e), context.brackets ? "\n" : ",\n")
 

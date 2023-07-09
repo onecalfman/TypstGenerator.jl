@@ -102,7 +102,7 @@ function gen_example()
 		set(heading, numbering = "I.I"),
 	]
 
-	return [settings..., page1, page2, page3, p]
+	return [settings..., page1, page2, page3]
 end
 
 function render_example(t)

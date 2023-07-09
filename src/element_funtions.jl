@@ -74,6 +74,10 @@ align(content::TypstElement, align::Union{Symbol, AbstractString}) = TypstAlign(
 
 link(content::TypstElement, dest::AbstractString) = TypstLink(content, dest)
 
+flex(i :: Int) = fr(1,i)
+
+flex(v :: Vector) = FlexMeasures[v...]
+
 
 v(l::TypstLength) = TypstV(l)
 h(l::TypstLength) = TypstH(l)

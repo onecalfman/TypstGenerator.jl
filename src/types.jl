@@ -275,6 +275,11 @@ name(t::Type)::String = t |> Symbol |> name
 
 name(t::Symbol)::String = typedict[Symbol(replace(string(t), "TypstGenerator." => ""))]
 
+function Base.convert(t :: Type{AbstractTypst}, str::String)::AbstractTypst
+	d :: Dict{Symbol,Any} = Dict()
+	TypstBaseElement(TypstText, str, d)
+end
+
 macro TypstTxtElem(t::Symbol)
 	@eval $(t |> name |> Symbol)(content::AbstractString; kw...) = TypstBaseElement($t, content, opts(kw))
 end
@@ -285,8 +290,6 @@ end
 
 macro TypstStdElem(t::Symbol)
 	@eval function $(t |> name |> Symbol)(content...; kw...)
-		println(typeof(content))
-		println(typeof(content) <: Tuple{Vector})
 		TypstBaseElement($t, typeof(content) <: Tuple{Vector} ? content[1] : AbstractTypst[content...], opts(kw))
 	end
 end

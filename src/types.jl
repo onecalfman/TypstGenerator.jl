@@ -280,9 +280,9 @@ function Base.convert(t :: Type{AbstractTypst}, str::String)::AbstractTypst
 	TypstBaseElement(TypstText, str, d)
 end
 
-function Base.convert(t :: Type{AbstractTypst}, str::Any)::AbstractTypst
+function Base.convert(t :: Type{AbstractTypst}, i::S) where { S <: Number }
 	d :: Dict{Symbol,Any} = Dict()
-	TypstBaseElement(TypstText, string(str), d)
+	TypstBaseElement(TypstText, string(i), d)
 end
 
 macro TypstTxtElem(t::Symbol)

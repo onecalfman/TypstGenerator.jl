@@ -98,9 +98,14 @@ $A = pi ^2$
       square(size: 22.0mm, ) ,
       square(size: 32.0mm, ) ,
       square(size: 42.0mm, ) ) ) <uncle_ted>
+  #set par(justify: true)
   #lorem(100)
   #cite("netwok2020")
   #lorem(50)
   #ref(<uncle_ted>)
-  #lorem(100)
-  #bibliography("example/bibliography.bib") ]
+  #lorem(50)
+  #columns()[
+    #lorem(100)
+    #heading(level: 4, outlined: false, "Par") 
+    #lorem(100)
+    #bibliography("example/bibliography.bib") ]]

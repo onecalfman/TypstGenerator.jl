@@ -117,5 +117,3 @@ function run_exmaple()
 	write("test.typ", gen_example() |> render_example)
 	run(`typst compile test.typ`)
 end
-
-run_exmaple()

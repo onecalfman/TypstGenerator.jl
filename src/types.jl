@@ -72,6 +72,7 @@ Citations = Union{Stringlike, Vector{Stringlike}}
 
 BaseOptions = Dict{Symbol, Any}
 
+
 opts(args...)::Dict{Symbol, Any} = d::Dict(args)
 
 opts(args::Base.Pairs)::Dict{Symbol, Any} = Dict(args)
@@ -82,6 +83,8 @@ struct TypstBaseElement <: TypstElement
 	options::BaseOptions
 	ref::Option{Symbol}
 end
+
+TypstElements = Union{AbstractTypst, Vector{AbstractTypst}, Vector{TypstBaseElement}}
 
 struct TypstAngle <: TypstUnits
 	value::Float64
@@ -121,7 +124,6 @@ abstract type TypstPad <: TypstParen end
 abstract type TypstBibliography <: TypstParen end
 
 abstract type TypstBlock <: TypstBracket end
-abstract type TypstColumns <: TypstBracket end
 abstract type TypstPage <: TypstBracket end
 abstract type TypstTerms <: TypstBracket end
 abstract type TypstFootnote <: TypstBracket end
@@ -158,6 +160,12 @@ struct TypstPlace <: TypstControlls
 	content::TypstElement
 	options::BaseOptions
 	alignment::Union{Symbol, AbstractString}
+end
+
+struct TypstColumns <: TypstBracket
+	content::TypstElements
+	options::BaseOptions
+	num::Option{Int}
 end
 
 struct TypstRotate <: TypstControlls

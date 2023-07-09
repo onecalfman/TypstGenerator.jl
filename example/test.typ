@@ -104,7 +104,7 @@ $A = pi ^2$
   #lorem(50)
   #ref(<uncle_ted>)
   #lorem(50)
-  #columns()[
+  #columns(3)[
     #lorem(100)
     #heading(level: 4, outlined: false, "Par") 
     #lorem(100)

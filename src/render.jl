@@ -74,6 +74,8 @@ render(e::TypstVec, context::TypstContext) = "\n" * join(map(x -> render(x, cont
 
 render(t::TypstAlign, context::TypstContext) = "$(render(context,t))($(t.align), $(render(t.content,create_context(false, context.indent))))"
 
+render(t::TypstColumns, context::TypstContext) = "$(render(context,t))($(t.num)$(render(t.options,prefixif = ", ")))[$(render(t.content,create_context(true, context.indent + 1)))]"
+
 render(e::BaseOptions; prefixif = "", suffixif = "") = isempty(e) ? "" : "$(prefixif)$(join(e |> collect .|> render, ", "))$(suffixif)"
 
 render(e::TypstCite, context::TypstContext) = "$(render(context,e))($(join(map(ref -> "\"$(ref)\"", e.refs), ", "))$(render(e.options, prefixif = ", ")))"

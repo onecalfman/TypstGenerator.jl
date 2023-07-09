@@ -37,14 +37,17 @@ import Base.stack
 @TypstContr(TypstRect)
 @TypstContr(TypstSquare)
 
-@TypstStdElem(TypstColumns)
-
 
 text(::Nothing) = text("")
 
 heading(content::String; kw...) = TypstBaseElement(TypstHeading, content, Dict(kw) |> allbutlabel, haskey(kw, :label) ? Dict(kw)[:label] : nothing)
+
 figure(content::TypstElement; kw...) = TypstBaseElement(TypstFigure, content, Dict(kw) |> allbutlabel, haskey(kw, :label) ? Dict(kw)[:label] : nothing)
+
+columns(content::TypstVec, num::Int; kw...) = TypstColumns(AbstractTypst[content...], opts(kw), num)
+
 ref(label::Symbol; kw...) = TypstReference(label, Dict(kw))
+
 math(expr::String) = TypstMath(expr)
 
 numbering(a...) = TypstNumbering([a...])

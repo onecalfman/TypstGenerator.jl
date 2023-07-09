@@ -1,21 +1,28 @@
 import Base.stack
 
-@TypstElem(TypstText, AbstractString)
-@TypstElem(TypstImage, AbstractString)
-@TypstElem(TypstPar, TypstElement)
-@TypstElem(TypstScale, TypstElement)
-@TypstElem(TypstGrid, TypstVec)
-@TypstElem(TypstBlock, TypstVec)
-@TypstElem(TypstStack, TypstVec)
-@TypstElem(TypstList, TypstVec)
-@TypstElem(TypstEnum, TypstVec)
-@TypstElem(TypstPage, TypstVec)
-@TypstElem(TypstTable, TypstVec)
-@TypstElem(TypstTerms, TypstVec)
-@TypstElem(TypstFootnote, TypstElement)
-@TypstElem(TypstMove, TypstElement)
-@TypstElem(TypstBibliography, AbstractString)
+@TypstTxtElem(TypstText)
+@TypstTxtElem(TypstImage)
+@TypstTxtElem(TypstBibliography)
 
+@TypstMonoStdElem(TypstPar)
+@TypstMonoStdElem(TypstScale)
+@TypstMonoStdElem(TypstFootnote)
+@TypstMonoStdElem(TypstMove)
+@TypstMonoStdElem(TypstEllipse)
+@TypstMonoStdElem(TypstCircle)
+@TypstMonoStdElem(TypstPath)
+@TypstMonoStdElem(TypstPolygon)
+@TypstMonoStdElem(TypstRect)
+@TypstMonoStdElem(TypstSquare)
+
+@TypstStdElem(TypstGrid)
+@TypstStdElem(TypstBlock)
+@TypstStdElem(TypstStack)
+@TypstStdElem(TypstList)
+@TypstStdElem(TypstEnum)
+@TypstStdElem(TypstPage)
+@TypstStdElem(TypstTable)
+@TypstStdElem(TypstTerms)
 
 @TypstContr(TypstPagebreak)
 @TypstContr(TypstColbreak)
@@ -30,12 +37,8 @@ import Base.stack
 @TypstContr(TypstRect)
 @TypstContr(TypstSquare)
 
-@TypstElem(TypstEllipse, TypstElement)
-@TypstElem(TypstCircle, TypstElement)
-@TypstElem(TypstPath, TypstElement)
-@TypstElem(TypstPolygon, TypstElement)
-@TypstElem(TypstRect, TypstElement)
-@TypstElem(TypstSquare, TypstElement)
+@TypstStdElem(TypstColumns)
+
 
 text(::Nothing) = text("")
 
@@ -71,6 +74,10 @@ deg(value::T) where {T <: Real} = TypstAngle(value)
 align(content::TypstElement, align::Union{Symbol, AbstractString}) = TypstAlign(content, align)
 
 link(content::TypstElement, dest::AbstractString) = TypstLink(content, dest)
+
+flex(i :: Int) = fr(1,i)
+
+flex(v :: Vector) = FlexMeasures[v...]
 
 
 v(l::TypstLength) = TypstV(l)

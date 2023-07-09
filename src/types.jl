@@ -21,6 +21,7 @@ ColorType = Option{Union{Symbol, Int}}
 
 TypstVec = Vector{T} where {T <: AbstractTypst}
 
+TypstContent = Union{TypstElement, TypstVec, Tuple{TypstElement}}
 
 struct RelativeLength
 	value::Float64
@@ -120,6 +121,7 @@ abstract type TypstPad <: TypstParen end
 abstract type TypstBibliography <: TypstParen end
 
 abstract type TypstBlock <: TypstBracket end
+abstract type TypstColumns <: TypstBracket end
 abstract type TypstPage <: TypstBracket end
 abstract type TypstTerms <: TypstBracket end
 abstract type TypstFootnote <: TypstBracket end
@@ -229,6 +231,7 @@ typedict = Dict(
 	:TypstCircle => "circle",
 	:TypstCite => "cite",
 	:TypstColbreak => "colbreak",
+	:TypstColumns => "columns",
 	:TypstDocument => "document",
 	:TypstEllipse => "ellipse",
 	:TypstEnum => "enum",
@@ -274,8 +277,28 @@ name(t::Type)::String = t |> Symbol |> name
 
 name(t::Symbol)::String = typedict[Symbol(replace(string(t), "TypstGenerator." => ""))]
 
-macro TypstElem(t::Symbol, arg::Symbol)
-	@eval $(t |> name |> Symbol)(content::$arg; kw...) = TypstBaseElement($t, content, opts(kw))
+function Base.convert(t :: Type{AbstractTypst}, str::String)::AbstractTypst
+	d :: Dict{Symbol,Any} = Dict()
+	TypstBaseElement(TypstText, str, d)
+end
+
+function Base.convert(t :: Type{AbstractTypst}, i::S) where { S <: Number }
+	d :: Dict{Symbol,Any} = Dict()
+	TypstBaseElement(TypstText, string(i), d)
+end
+
+macro TypstTxtElem(t::Symbol)
+	@eval $(t |> name |> Symbol)(content::AbstractString; kw...) = TypstBaseElement($t, content, opts(kw))
+end
+
+macro TypstMonoStdElem(t::Symbol)
+	@eval $(t |> name |> Symbol)(content :: TypstElement; kw...) = TypstBaseElement($t, content, opts(kw))
+end
+
+macro TypstStdElem(t::Symbol)
+	@eval function $(t |> name |> Symbol)(content...; kw...)
+		TypstBaseElement($t, typeof(content) <: Tuple{Vector} ? content[1] : AbstractTypst[content...], opts(kw))
+	end
 end
 
 macro TypstContr(t::Symbol)

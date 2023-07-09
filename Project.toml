@@ -1,7 +1,7 @@
 name = "TypstGenerator"
 uuid = "b4d5b4e8-9a4e-401d-a981-0a2e8ff042be"
 authors = ["Jonas Walkling <jonas@walkling.email>"]
-version = "0.0.1"
+version = "0.1.1"
 
 [deps]
 Measures = "442fdcdd-2543-5da2-b0f3-8c86c306513e"

@@ -5,8 +5,8 @@ doc
 #show: project.with("Report")
 	
 #set page(margin: (left: 20.0mm, right: 20.0mm, top: 30.0mm, bottom: 30.0mm), footer: grid(columns: (1fr, 1fr), 
-  align(left,   image(height: 12.0mm, "example/typst_banner.png") ),
-  align(right,   image(height: 12.0mm, "example/julia.svg") )) )
+  align(left,   image(height: 12.0mm, "typst_banner.png") ),
+  align(right,   image(height: 12.0mm, "julia.svg") )) )
 #set heading(numbering: "I.I")
 #page()[
   #outline() 
@@ -43,7 +43,7 @@ doc
     rotate(81.0deg,      square(fill: rgb(33, 243, 100), size: 20.0mm,         align(bottom, $ A =  pi r^2 $)) ),
     rotate(86.0deg,      square(fill: rgb(33, 255, 100), size: 20.0mm,         align(bottom, $ A =  pi r^2 $)) )) 
   #v(10.0mm)
-  #figure(caption: text("The Julia language logo") ,     image(height: 50.0mm, "example/julia.svg") ) <test_fig>
+  #figure(caption: text("The Julia language logo") ,     image(height: 50.0mm, "julia.svg") ) <test_fig>
   #align(center,   block(radius: 2.0mm, fill: cmyk(10%, 20%, 30%, 10%), inset: 4.2333333333333325mm)[
     #numbering("i.i)", 531441, 2349)
     #lorem(20)
@@ -108,4 +108,4 @@ $A = pi ^2$
     #lorem(100)
     #heading(level: 4, outlined: false, "Par") 
     #lorem(100)
-    #bibliography("example/bibliography.bib") ]]
+    #bibliography("bibliography.bib") ]]

@@ -33,17 +33,17 @@ typst([t1,t2,t3])
 Elements like grid, table or page accept lists of typst arguments.
 
 ```julia
-block([
-grid([map(x -> text("field $(x)"), 1:3)...],
-    columns = [fr(1), fr(2), fr(5)],
-    row_gutter = 3mm,
-),
-line(length = 0.5),
-grid([map(x -> text("field $(x)"), 4:12)...],
-    columns = [fr(1), fr(2), fr(5)],
-    row_gutter = 3mm,
+block(
+    grid(map(x -> text("field $(x)"), 1:3),
+        columns = [fr(1), fr(2), fr(5)],
+        row_gutter = 3mm,
+    ),
+    line(length = 0.5),
+    grid(map(x -> text("field $(x)"), 4:12),
+        columns = [fr(1), fr(2), fr(5)],
+        row_gutter = 3mm,
+    )
 )
-])
 ```
 
 ![](docs/src/assets/example_2.png)
@@ -57,25 +57,26 @@ Floats are interpretted as percent when given as an named argument.
 ### set
 
 ```julia
-block([
+block(
     set(text, size = 10pt),
-    text("10pt text"),
-    text("10pt text"),
+    "10pt text",
+    "10pt text",
     set(text, size = 15pt, fill = cmyk(0.9,0.2,0.4,0.2)),
-    text("50pt text"),
+    "50pt text",
     literal("#overline[literal]"),
     set(text, size = 10pt),
-    text("colored text"),
-])
+    "colored text",
+)
 ```
 ![](docs/src/assets/example_3.png)
 
 Set syntax works pretty similar to typst itself.
 For arbitrary typst commands use the literal function.
+Strings in typst functions will be interpreted as text.
 
 ### figures
 ```julia
-page([
+page(
     figure(
         grid(map(x -> square(
             align(
@@ -84,7 +85,7 @@ page([
                 x = x/20, y = x/20), 
             :bottom), 
             size = x * mm), 5:5:30),
-        columns = [fr(1,3)...,fr(2,3)...],
+        columns = fr.(1:length(5:5:30)),
         ),
         label = :label1,
         caption = text("a figure")
@@ -92,7 +93,7 @@ page([
     lorem(20),
     lorem(20),
     ref(:label1)
-])
+)
 ```
 
 Figures can be referenced, using the label option with some symbol.

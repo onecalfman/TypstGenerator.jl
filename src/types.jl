@@ -21,6 +21,7 @@ ColorType = Option{Union{Symbol, Int}}
 
 TypstVec = Vector{T} where {T <: AbstractTypst}
 
+TypstContent = Union{TypstElement, TypstVec, Tuple{TypstElement}}
 
 struct RelativeLength
 	value::Float64
@@ -274,8 +275,20 @@ name(t::Type)::String = t |> Symbol |> name
 
 name(t::Symbol)::String = typedict[Symbol(replace(string(t), "TypstGenerator." => ""))]
 
-macro TypstElem(t::Symbol, arg::Symbol)
-	@eval $(t |> name |> Symbol)(content::$arg; kw...) = TypstBaseElement($t, content, opts(kw))
+macro TypstTxtElem(t::Symbol)
+	@eval $(t |> name |> Symbol)(content::AbstractString; kw...) = TypstBaseElement($t, content, opts(kw))
+end
+
+macro TypstMonoStdElem(t::Symbol)
+	@eval $(t |> name |> Symbol)(content :: TypstElement; kw...) = TypstBaseElement($t, content, opts(kw))
+end
+
+macro TypstStdElem(t::Symbol)
+	@eval function $(t |> name |> Symbol)(content...; kw...)
+		println(typeof(content))
+		println(typeof(content) <: Tuple{Vector})
+		TypstBaseElement($t, typeof(content) <: Tuple{Vector} ? content[1] : AbstractTypst[content...], opts(kw))
+	end
 end
 
 macro TypstContr(t::Symbol)

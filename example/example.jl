@@ -1,6 +1,5 @@
 using TypstGenerator
 
-begin
 function gen_example()
 
 	le = text.(split("Lorem ipsum dolor sit amet", " "))
@@ -80,13 +79,18 @@ function gen_example()
 			caption = "The industrial revolution was a distaster for mankind",
 			label = :uncle_ted,
 		),
+		set(par, justify = true),
 		lorem(100),
 		cite(:netwok2020),
 		lorem(50),
-		par(text("uwu")),
 		ref(:uncle_ted),
-		lorem(100),
-		bibliography(bib),
+		lorem(50),
+		columns(
+			lorem(100),
+			heading("Par", level = 4, outlined = false),
+			lorem(100),
+			bibliography(bib),
+		),
 		margin = (
 			left = 20mm,
 			right = 20mm,
@@ -114,5 +118,3 @@ function run_exmaple()
 	run(`typst compile test.typ`)
 end
 
-run_exmaple()
-end

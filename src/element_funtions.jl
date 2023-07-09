@@ -24,7 +24,6 @@ import Base.stack
 @TypstStdElem(TypstTable)
 @TypstStdElem(TypstTerms)
 
-
 @TypstContr(TypstPagebreak)
 @TypstContr(TypstColbreak)
 @TypstContr(TypstDocument)
@@ -37,6 +36,8 @@ import Base.stack
 @TypstContr(TypstPolygon)
 @TypstContr(TypstRect)
 @TypstContr(TypstSquare)
+
+@TypstStdElem(TypstColumns)
 
 
 text(::Nothing) = text("")

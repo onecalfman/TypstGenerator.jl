@@ -121,6 +121,7 @@ abstract type TypstPad <: TypstParen end
 abstract type TypstBibliography <: TypstParen end
 
 abstract type TypstBlock <: TypstBracket end
+abstract type TypstColumns <: TypstBracket end
 abstract type TypstPage <: TypstBracket end
 abstract type TypstTerms <: TypstBracket end
 abstract type TypstFootnote <: TypstBracket end
@@ -230,6 +231,7 @@ typedict = Dict(
 	:TypstCircle => "circle",
 	:TypstCite => "cite",
 	:TypstColbreak => "colbreak",
+	:TypstColumns => "columns",
 	:TypstDocument => "document",
 	:TypstEllipse => "ellipse",
 	:TypstEnum => "enum",

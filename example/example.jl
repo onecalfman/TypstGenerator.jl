@@ -85,11 +85,11 @@ function gen_example()
 		lorem(50),
 		ref(:uncle_ted),
 		lorem(50),
-		columns(
-			lorem(100),
-			heading("Par", level = 4, outlined = false),
-			lorem(100),
-			bibliography(bib),
+		columns([lorem(100),
+				heading("Par", level = 4, outlined = false),
+				lorem(100),
+				bibliography(bib)],
+			3,
 		),
 		margin = (
 			left = 20mm,
@@ -118,3 +118,4 @@ function run_exmaple()
 	run(`typst compile test.typ`)
 end
 
+run_exmaple()

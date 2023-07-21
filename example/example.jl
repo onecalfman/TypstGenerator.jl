@@ -17,7 +17,11 @@ function gen_example()
 		set(align, :center),
 		grid(map(x -> rect(align(text(string(x)), :horizon), width = x * 3mm, height = 10mm), 1:3)...),
 		set(align, :left),
-		lorem(200),
+		lorem(10),
+		figure(
+			table(1:100 .|> text, columns = 20),
+			caption = "Generated Table"
+		),
 		heading("Important Topic", level = 2),
 		lorem(200),
 		set(align, :center),
@@ -27,29 +31,28 @@ function gen_example()
 		grid(map(x -> rotate(
 					square(
 						align(
-							math(" A =  pi r^2 "), :bottom),
+							"\$ A =  pi r^2 \$", :bottom),
 						size = 20mm, fill = rgb(0x21, min(0xff, x * 3), 100)), deg(x)), 1:5:90),
 			columns = fr(1, 18),
 		),
 		v(1cm),
 		figure(
 			image(julia_svg, height = 50mm),
-			caption = text("The Julia language logo"),
+			caption = "The Julia language logo",
 			label = :test_fig,
 		),
 		align(
 			block(
-				[
 					numbering("i.i)", 3^12, 2349),
 					lorem(20),
 					ref(:test_fig),
 					lorem(20),
-					math(" A = pi ^2 "),
+					"math in text example \$ A = pi ^2 \$",
 					lorem(20),
 					footnote(lorem(10)),
 					math("A = pi ^2"),
 					lorem(20),
-				],
+
 				inset = 12pt,
 				radius = 2mm,
 				fill = cmyk(0.1, 0.2, 0.3, 0.1)), :center),
@@ -60,7 +63,7 @@ function gen_example()
 				enum(
 					map(x ->
 							grid([
-									text("x^$(x)"),
+									math("x^$(x)"),
 								],
 								columns = [30pt, 10pt],
 							), 1:length(le)),
@@ -117,3 +120,5 @@ function run_exmaple()
 	write("test.typ", gen_example() |> render_example)
 	run(`typst compile test.typ`)
 end
+
+run_exmaple()

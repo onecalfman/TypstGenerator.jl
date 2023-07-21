@@ -1,12 +1,20 @@
 struct TypstContext
 	brackets::Bool
+	table::Bool
+	listable::Bool
+	block::Bool
 	indent::Int
 end
 
 import Base.+
 +(a::Symbol, b::Symbol) = string(a) * " + " * string(b)
 
-create_context(brackets::Bool, indent::Int = 0) = TypstContext(brackets, indent)
+create_context(
+	brackets::Bool,
+	indent::Int = 0;
+	table::Bool = false,
+	listable::Bool = false,
+	block::Bool = false) = TypstContext(brackets, table, listable, block, indent)
 
 hash(c::TypstContext) = c.brackets ? "#" : ""
 
@@ -70,7 +78,7 @@ render(e::TypstMath, _) = "\$$(e.expr)\$"
 
 render(t::TypstLink, context::TypstContext) = "$(render(context,t))(\"$(t.dest)\", $(render(t.content,create_context(false, context.indent))))"
 
-render(e::TypstVec, context::TypstContext) = "\n" * join(map(x -> render(x, context), e), context.brackets ? "\n" : ",\n")
+render(e::TypstVec, context::TypstContext)::String = "\n" * join(map(x -> render(x, context), e), context.brackets && !context.table ? "\n" : ",\n")
 
 render(t::TypstAlign, context::TypstContext) = "$(render(context,t))($(t.align), $(render(t.content,create_context(false, context.indent))))"
 
@@ -82,7 +90,7 @@ render(e::TypstCite, context::TypstContext) = "$(render(context,e))($(join(map(r
 
 render(e::TypstPlace, context::TypstContext) = "$(render(context,e))($(e.alignment),$(render(e.options, suffixif = ", "))$(render(e.content, create_context(false, context.indent + 1))))"
 
-render(e::TypstRotate, context::TypstContext) = "$(render(context,e))($(render(e.angle)),$(render(e.options, suffixif = ", "))$(render(e.content, create_context(false, context.indent + 1))))"
+render(e::TypstRotate, context::TypstContext) = "$(render(context,e))($(render(e.angle)),$(render(e.options)))[$(render(e.content, create_context(true, context.indent + 1)))]"
 
 render(e::TypstSet, context::TypstContext) = "$(context |> render)set $(e.type |> name)($(render(e.options)))"
 
@@ -92,9 +100,42 @@ render(e::TypstReference, context::TypstContext) = "$(render(context,e))($(rende
 
 render(e::Type, ref::Option{Symbol}) = e <: TypstReferable && !isnothing(ref) ? "<$(ref)>" : ""
 
-function render(e::Union{TypstBaseElement, TypstBaseControlls}, context::TypstContext)::String
-	newcontext = create_context(e.type <: TypstBracket, context.indent + 1)
+Base.isnumeric(s::Union{AbstractString, AbstractChar}) = tryparse(Float64, s) !== nothing
+
+function render(e::TypstBaseElement, context::TypstContext)::String
+	if e.type == TypstText
+		println(context)
+		c = (e.content |> isnumeric && !context.table) ? render(string(e.content)) : string(e.content)
+		return (((context.brackets || context.table) && !(context.listable || context.block)) ? "[$(c)]" : c)
+	elseif e.type == TypstHeading
+		return repeat("=", haskey(e.options, :level) ? e.options[:level] : 1) * " $(e.content)"
+	elseif e.type == TypstList && e.options |> isempty
+		println(context)
+		str = join(map(x -> "- " * render(x, TypstContext(true, false, true, false, context.indent)), e.content), "\n")
+		context.indent ≥ 1 ? "[$(str)]" : str
+	elseif e.type == TypstEnum && e.options |> isempty
+		str = join(map(x -> "+ " * render(x, TypstContext(true, false, true, false, context.indent)), e.content), "\n")
+		context.indent ≥ 1 ? "[$(str)]" : str
+	else
+		println(e.type)
+
+		newcontext = create_context(e.type <: TypstBracket, context.indent + 1, table = e.type <: Union{TypstTable, TypstListable}, listable = false, block = e.type == TypstBlock)
+
+		return render(context, e.type) *
+			   (
+				   newcontext.brackets ?
+				   newcontext.table ?
+				   "($(render(e.options, suffixif = ", ")) $(render(e.content, newcontext)))" :
+				   "($(render(e.options)))[$(render(e.content, newcontext))]" :
+				   "($(render(e.options, suffixif = ", "))$(typeof(e) == TypstBaseElement ? render(e.content, newcontext) : "")) "
+			   ) * render(e.type, e.ref)
+	end
+end
+
+function render(e::TypstBaseControlls, context::TypstContext)::String
+	newcontext = create_context(e.type <: TypstBracket || hasfield(typeof(e), :content), context.indent + 1)
 	render(context, e.type) * (newcontext.brackets ?
 							   "($(render(e.options)))[$(render(e.content, newcontext))]" :
 							   "($(render(e.options, suffixif = ", "))$(typeof(e) == TypstBaseElement ? render(e.content, newcontext) : "")) ") * render(e.type, e.ref)
 end
+

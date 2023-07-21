@@ -7,6 +7,7 @@ abstract type TypstBracket <: TypstElement end
 abstract type TypstParen <: TypstElement end
 abstract type TypstReferable <: TypstParen end
 abstract type TypstMeta <: TypstElement end
+abstract type TypstListable <: TypstBracket end
 
 abstract type TypstGeometry <: TypstElement end
 
@@ -113,10 +114,10 @@ abstract type TypstImage <: TypstElement end
 abstract type TypstPar <: TypstElement end
 
 abstract type TypstGrid <: TypstParen end
-abstract type TypstList <: TypstParen end
 abstract type TypstScale <: TypstParen end
-abstract type TypstEnum <: TypstParen end
-abstract type TypstTable <: TypstParen end
+abstract type TypstEnum <: TypstListable end
+abstract type TypstList <: TypstListable end
+abstract type TypstTable <: TypstBracket end
 abstract type TypstStack <: TypstParen end
 abstract type TypstMove <: TypstParen end
 abstract type TypstRepeat <: TypstParen end
@@ -147,7 +148,7 @@ abstract type TypstOutline <: TypstControlls end
 
 
 struct TypstAlign <: TypstControlls
-	content::TypstElement
+	content::AbstractTypst
 	align::Union{Symbol, AbstractString}
 end
 
